@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"os"
 	"runtime"
 	"time"
 )
@@ -20,12 +21,9 @@ func Infof(format string, a ...interface{}) {
 
 // Error is to log errors
 func Error(err error, str string) {
-	var (
-		pc   uintptr
-		fn   string
-		line int
-	)
+	pc, fn, line, _ := runtime.Caller(1)
 
 	date := time.Now().Format("Mon Jan 2 15:04:05 2006")
-	fmt.Printf("%s | Func: %s | File: [%s:%d] | Error: %v | Msg %s\n", date, runtime.FuncForPC(pc).Name(), fn, line, err, str)
+	fmt.Printf("%s\nFunc: %s\nFile: [%s:%d]\nError: %v\nMsg: %s\n", date, runtime.FuncForPC(pc).Name(), fn, line, err, str)
+	os.Exit(2)
 }
